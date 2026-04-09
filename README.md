@@ -9,7 +9,7 @@ Technologies
 - Docker: docker-compose.yml
 Architecture
 - Functional frontend
-- Backend implemented but not running
+- Backend
 - Simulated API in the frontend
 - Simulated database
 Rundown
