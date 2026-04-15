@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ToDo App</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 400px;
+      margin: auto;
+      text-align: center;
+    }
+    input { padding: 8px; width: 70%; }
+    button { padding: 8px; margin: 5px; }
+    li { margin: 10px; list-style: none; }
+  </style>
+</head>
+<body>
+
+<h1>ToDo App</h1>
+
+<input id="task" placeholder="Nueva tarea">
+<button onclick="addTask()">Agregar</button>
+
+<ul id="list"></ul>
+
+<script>
+async function getTasks() {
+  const res = await fetch('http://localhost:3000/tasks');
+  return await res.json();
+}
+
+async function createTask(title) {
+  const res = await fetch('http://localhost:3000/tasks', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title })
+  });
+  return await res.json();
+}
+
+async function deleteTask(id) {
+  await fetch(`http://localhost:3000/tasks/${id}`, { method: 'DELETE' });
+}
+
+async function loadTasks() {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  const tasks = await getTasks();
+
+  tasks.forEach(t => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      ${t.title}
+      <button onclick="deleteTask(${t.id}).then(loadTasks)">❌</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+async function addTask() {
+  const input = document.getElementById('task');
+  if (input.value.trim() === '') return;
+  await createTask(input.value);
+  input.value = '';
+  loadTasks();
+}
+
+loadTasks();
+</script>
+
+</body>
+</html>
