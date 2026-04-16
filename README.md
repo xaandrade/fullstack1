@@ -9,7 +9,11 @@ Technologies
 - Docker: docker-compose.yml
 Architecture
 - Functional frontend
+Validation_on_JWT
+- Backend
+=======
 - Backend implemented but not running
+main
 - Simulated API in the frontend
 - Simulated database
 Rundown
